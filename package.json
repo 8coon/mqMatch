@@ -2,9 +2,9 @@
   "name": "mqmatch",
   "version": "0.0.1",
   "description": "Media query matcher",
-  "main": "dist/index.js",
+  "main": "dist/mqMatch.min.js",
   "scripts": {
-    "build": "rm -rf typings && rm -rf dist && tsc --project tsconfig.json && rollup -c && uglifyjs dist/mqMatch.js >> dist/mqMatch.min.js",
+    "build": "rm -rf typings && rm -rf dist && tsc --project tsconfig.lib.json && rollup -c && uglifyjs dist/mqMatch.js >> dist/mqMatch.min.js",
     "test:unit": "jest --coverage --config=jest.config.js",
     "test:integration": "jest --config=jest.integration.js"
   },

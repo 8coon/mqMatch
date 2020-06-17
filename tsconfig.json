@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "jsx": "react",
+    "importHelpers": true,
+    "target": "ES5",
+    "declaration": true,
+    "declarationDir": "typings",
+    "emitDeclarationOnly": true,
+    "lib": [
+      "dom",
+      "es5"
+    ],
+    "baseUrl": "./"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules
+dist/
+coverage/
+trash/
+.idea
+.awcache
+public
+typings

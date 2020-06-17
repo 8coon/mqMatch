@@ -21,6 +21,21 @@ Array [
 ]
 `;
 
+exports[`[modern] Unit on and off works 1`] = `
+Array [
+  Array [
+    Array [
+      "(min-height: 220)",
+    ],
+  ],
+  Array [
+    Array [
+      "(min-height: 220)",
+    ],
+  ],
+]
+`;
+
 exports[`[modern] Unit triggers events on matched query list change 1`] = `
 Array [
   Array [

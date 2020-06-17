@@ -65,4 +65,32 @@ describe('[modern] Unit', () => {
 
 		expect(handler.mock.calls).toMatchSnapshot();
 	});
+
+	test('on and off works', () => {
+		mqMatch = createMediaQueryMatch();
+		const handler = jest.fn();
+
+		alter(['(min-height: 220)']);
+
+		mqMatch.on('change', handler);
+		mqMatch.on('change', handler);
+
+		mqMatch.register('(min-height: 220)');
+
+		mqMatch.off('change', handler);
+		alter([]);
+
+		mqMatch.on('change', handler);
+		alter(['(min-height: 220)']);
+
+		mqMatch.off('change', handler);
+		mqMatch.off('change', handler);
+		alter([]);
+
+		mqMatch.on('change2' as any, handler);
+		alter(['(min-height: 220)']);
+		mqMatch.off('change2' as any, handler);
+
+		expect(handler.mock.calls).toMatchSnapshot();
+	});
 });

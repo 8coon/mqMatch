@@ -1,7 +1,7 @@
 import {alter, setup, teardown} from "./mocks/matchMedia.modern";
 import {createMediaQueryMatch, MQMatch} from "../src";
 
-describe('[modern] Unit', () => {
+describe('Unit', () => {
 	let mqMatch: MQMatch;
 
 	beforeAll(() => {

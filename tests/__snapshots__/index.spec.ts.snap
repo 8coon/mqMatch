@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`[modern] Unit multiple queries match at once 1`] = `
+exports[`Unit multiple queries match at once 1`] = `
 Array [
   Array [
     Array [
@@ -21,7 +21,7 @@ Array [
 ]
 `;
 
-exports[`[modern] Unit on and off works 1`] = `
+exports[`Unit on and off works 1`] = `
 Array [
   Array [
     Array [
@@ -36,7 +36,7 @@ Array [
 ]
 `;
 
-exports[`[modern] Unit triggers events on matched query list change 1`] = `
+exports[`Unit triggers events on matched query list change 1`] = `
 Array [
   Array [
     Array [

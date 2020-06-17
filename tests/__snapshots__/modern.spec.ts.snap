@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`[modern] Unit multiple queries match at once 1`] = `
+Array [
+  Array [
+    Array [
+      "(min-height: 220)",
+    ],
+  ],
+  Array [
+    Array [
+      "(min-height: 440)",
+    ],
+  ],
+  Array [
+    Array [
+      "(min-height: 220)",
+      "(min-height: 440)",
+    ],
+  ],
+]
+`;
+
 exports[`[modern] Unit triggers events on matched query list change 1`] = `
 Array [
   Array [

@@ -39,6 +39,8 @@ export function setup(matchingQueries?: string[]) {
 export function alter(matchingQueries: string[]) {
 	globalMatchingQueries = matchingQueries;
 
+	const toFire: MQLMock[] = [];
+
 	for (const mql of mqls) {
 		const matches = globalMatchingQueries.includes(mql.media);
 		const matchesChanged = mql.matches !== matches;
@@ -46,8 +48,12 @@ export function alter(matchingQueries: string[]) {
 		mql.matches = matches;
 
 		if (matchesChanged) {
-			mql.__emitter.emit('change');
+			toFire.push(mql);
 		}
+	}
+
+	for (const mql of toFire) {
+		mql.__emitter.emit('change');
 	}
 }
 

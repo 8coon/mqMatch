@@ -45,6 +45,7 @@ export interface MQMatch {
 class MQMatchImpl implements MQMatch {
 	private _queries: Record<string, MediaQueryList> = {};
 	private _handlers: MQChangeEventHandler[] = [];
+	private _lastFiredSnapshot: string;
 
 	public getCurrentMatches(): string[] {
 		return Object
@@ -124,6 +125,13 @@ class MQMatchImpl implements MQMatch {
 
 	private _handleMediaQueryChange = () => {
 		const currentMatches = this.getCurrentMatches();
+		const currentMatchesSnapshot = currentMatches.join(',');
+
+		if (this._lastFiredSnapshot !== undefined && this._lastFiredSnapshot === currentMatchesSnapshot) {
+			return;
+		}
+
+		this._lastFiredSnapshot = currentMatchesSnapshot;
 
 		for (const handler of this._handlers) {
 			handler(currentMatches);

@@ -48,4 +48,21 @@ describe('[modern] Unit', () => {
 
 		expect(handler.mock.calls).toMatchSnapshot();
 	});
+
+	test('multiple queries match at once', () => {
+		mqMatch = createMediaQueryMatch();
+		const handler = jest.fn();
+
+		mqMatch.on('change', handler);
+
+		mqMatch.register('(min-height: 220)');
+		mqMatch.register('(min-height: 440)');
+
+		alter([]);
+		alter(['(min-height: 220)']);
+		alter(['(min-height: 440)']);
+		alter(['(min-height: 220)', '(min-height: 440)']);
+
+		expect(handler.mock.calls).toMatchSnapshot();
+	});
 });

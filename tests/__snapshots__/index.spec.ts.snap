@@ -36,6 +36,19 @@ Array [
 ]
 `;
 
+exports[`Unit register and unregister work 1`] = `
+Array [
+  Array [
+    Array [
+      "(min-height: 220)",
+    ],
+  ],
+  Array [
+    Array [],
+  ],
+]
+`;
+
 exports[`Unit triggers events on matched query list change 1`] = `
 Array [
   Array [

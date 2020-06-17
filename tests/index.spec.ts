@@ -93,4 +93,20 @@ describe('Unit', () => {
 
 		expect(handler.mock.calls).toMatchSnapshot();
 	});
+
+	test('register and unregister work', () => {
+		mqMatch = createMediaQueryMatch();
+		const handler = jest.fn();
+
+		mqMatch.on('change', handler);
+		alter(['(min-height: 220)']);
+
+		mqMatch.register('(min-height: 220)');
+		mqMatch.register('(min-height: 220)');
+
+		mqMatch.unregister('(min-height: 220)');
+		mqMatch.unregister('(min-height: 220)');
+
+		expect(handler.mock.calls).toMatchSnapshot();
+	});
 });

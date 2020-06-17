@@ -1,9 +1,12 @@
 import {alter, setup, teardown} from "./mocks/matchMedia.modern";
-import {createMediaQueryMatch} from "../src";
+import {createMediaQueryMatch, MQMatch} from "../src";
 
 describe('[modern] Unit', () => {
+	let mqMatch: MQMatch;
+
 	beforeAll(() => {
 		setup();
+		mqMatch = createMediaQueryMatch();
 	});
 
 	afterEach(() => {
@@ -11,11 +14,12 @@ describe('[modern] Unit', () => {
 	});
 
 	afterAll(() => {
+		mqMatch.destroy();
 		teardown();
 	});
 
 	test('Matches one query', () => {
-		const mqMatch = createMediaQueryMatch();
+		mqMatch = createMediaQueryMatch();
 		expect(mqMatch.getCurrentMatches()).toEqual([]);
 
 		mqMatch.register('(min-height: 220)');
@@ -25,5 +29,23 @@ describe('[modern] Unit', () => {
 
 		alter([]);
 		expect(mqMatch.getCurrentMatches()).toEqual([]);
+	});
+
+	test('triggers events on matched query list change', () => {
+		mqMatch = createMediaQueryMatch();
+		const handler = jest.fn();
+
+		mqMatch.on('change', handler);
+
+		mqMatch.register('(min-height: 220)');
+		alter(['(min-height: 220)']);
+
+		alter([]);
+		mqMatch.unregister('(min-height: 220)');
+
+		alter(['(min-height: 220)']);
+		mqMatch.register('(min-height: 220)');
+
+		expect(handler.mock.calls).toMatchSnapshot();
 	});
 });

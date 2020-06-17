@@ -109,4 +109,18 @@ describe('Unit', () => {
 
 		expect(handler.mock.calls).toMatchSnapshot();
 	});
+
+	test('destroy works', () => {
+		mqMatch = createMediaQueryMatch();
+		const handler = jest.fn();
+
+		mqMatch.register('(min-height: 220)');
+		mqMatch.on('change', handler);
+
+		mqMatch.destroy();
+
+		alter(['(min-height: 220)']);
+
+		expect(handler.mock.calls).toEqual([]);
+	});
 });

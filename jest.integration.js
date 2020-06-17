@@ -4,6 +4,6 @@ module.exports = {
     'src/**/*.{ts,tsx}',
   ],
   testMatch: [
-      '**/?(*.)(spec).ts?(x)',
+      '**/?(*.)(test).ts?(x)',
   ],
 };

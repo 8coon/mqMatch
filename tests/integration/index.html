@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>mqMatch Integration Test</title>
+
+	<style>
+		.block {
+			display: block;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+		}
+
+		#query1 {
+			background-color: #fff4c2;
+		}
+
+		#query2 {
+			background-color: aquamarine;
+		}
+
+		#query3 {
+			background-color: chartreuse;
+		}
+
+		.loaded {
+			visibility: hidden;
+		}
+	</style>
+
+	<script src="../../dist/mqMatch.min.js"></script>
+</head>
+<body>
+	<div class="block" id="query1">(min-width: 600px) and (max-width: 699px)</div>
+	<div class="block" id="query2">(min-width: 700px) and (max-width: 799px)</div>
+	<div class="block" id="query3">(min-width: 700px) and (max-width: 749px)</div>
+
+	<div class="block" id="loaded">Loaded!</div>
+
+	<script>
+		const match = mqMatch.createMediaQueryMatch();
+
+		const queriesOrdered = [
+			'(min-width: 600px) and (max-width: 699px)',
+			'(min-width: 700px) and (max-width: 799px)',
+			'(min-width: 700px) and (max-width: 749px)',
+		];
+
+		queriesOrdered.forEach(_ => match.register(_));
+
+		function onQueryChange(queries) {
+			queriesOrdered.forEach((query, i) => {
+				const block = window['query' + (i + 1)];
+
+				block.style.visibility = queries.includes(query)
+					? 'visible'
+					: 'hidden';
+			});
+		}
+
+		match.on('change', onQueryChange);
+		onQueryChange(match.getCurrentMatches());
+
+		window.loaded.style.visibility = 'visible';
+	</script>
+</body>
+</html>

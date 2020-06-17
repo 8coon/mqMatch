@@ -1,5 +1,4 @@
 import {setup as setupModern} from "./matchMedia.modern";
-export {alter, teardown} from "./matchMedia.modern";
 
 export function setup(matchingQueries?: string[]) {
 	setupModern(matchingQueries);
@@ -11,8 +10,8 @@ export function setup(matchingQueries?: string[]) {
 		value: jest.fn().mockImplementation(query => {
 			const result = matchMediaModern(query);
 
-			delete result.addListener;
-			delete result.removeListener;
+			delete result.addEventListener;
+			delete result.removeEventListener;
 
 			return result;
 		}),

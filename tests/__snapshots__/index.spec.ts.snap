@@ -66,3 +66,21 @@ Array [
   ],
 ]
 `;
+
+exports[`Unit works with deprecated methods 1`] = `
+Array [
+  Array [
+    Array [
+      "(min-height: 220)",
+    ],
+  ],
+  Array [
+    Array [],
+  ],
+  Array [
+    Array [
+      "(min-height: 220)",
+    ],
+  ],
+]
+`;

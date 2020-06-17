@@ -1,4 +1,5 @@
 import {alter, setup, teardown} from "./mocks/matchMedia.modern";
+import {setup as setupLegacy} from "./mocks/matchMedia.legacy";
 import {createMediaQueryMatch, MQMatch} from "../src";
 
 describe('Unit', () => {
@@ -122,5 +123,25 @@ describe('Unit', () => {
 		alter(['(min-height: 220)']);
 
 		expect(handler.mock.calls).toEqual([]);
+	});
+
+	test('works with deprecated methods', () => {
+		setupLegacy();
+
+		mqMatch = createMediaQueryMatch();
+		const handler = jest.fn();
+
+		mqMatch.on('change', handler);
+
+		mqMatch.register('(min-height: 220)');
+		alter(['(min-height: 220)']);
+
+		alter([]);
+		mqMatch.unregister('(min-height: 220)');
+
+		alter(['(min-height: 220)']);
+		mqMatch.register('(min-height: 220)');
+
+		expect(handler.mock.calls).toMatchSnapshot();
 	});
 });

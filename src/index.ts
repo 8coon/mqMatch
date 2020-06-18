@@ -2,11 +2,22 @@
 type MQEvent = 'change';
 type MQChangeEventHandler = (matches: string[]) => void;
 
+export interface MQMatchSnapshotRecord {
+	raw: string;
+	parsed: string;
+	matches: boolean;
+}
+
 export interface MQMatch {
 	/**
 	 * Returns the list of current matched queries
 	 */
 	getCurrentMatches(): string[];
+
+	/**
+	 * Returns the current listeners state
+	 */
+	getCurrentSnapshot(): MQMatchSnapshotRecord[];
 
 	/**
 	 * Adds a new media query to the set
@@ -51,6 +62,16 @@ class MQMatchImpl implements MQMatch {
 		return Object
 			.keys(this._queries)
 			.filter(query => this._queries[query].matches);
+	}
+
+	public getCurrentSnapshot(): MQMatchSnapshotRecord[] {
+		return Object
+			.keys(this._queries)
+			.map(query => ({
+				raw: query,
+				parsed: this._queries[query].media,
+				matches: this._queries[query].matches,
+			}));
 	}
 
 	public on(event: MQEvent, handler: MQChangeEventHandler) {

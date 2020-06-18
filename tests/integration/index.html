@@ -39,7 +39,9 @@
 	<div class="block" id="loaded">Loaded!</div>
 
 	<script>
-		const match = mqMatch.createMediaQueryMatch();
+		const match = mqMatch.createMediaQueryMatch({
+			matchMediaStyleHack: location.href.includes('?matchMediaStyleHack'),
+		});
 
 		const queriesOrdered = [
 			'(min-width: 600px) and (max-width: 699px)',

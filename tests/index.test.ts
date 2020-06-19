@@ -37,34 +37,36 @@ afterAll(() => {
 			await browser.close();
 		});
 
-		test(`Test ${engine.name()}`, async () => {
-			await page.setViewportSize({width: 500, height: 300});
+		['', 'matchMediaStyleHack'].forEach((param) => {
+			test(`Test ${engine.name()}${param ? ` ${param}` : ''}`, async () => {
+				await page.setViewportSize({width: 500, height: 300});
 
-			await page.goto('http://localhost:8080/tests/integration');
+				await page.goto(`http://localhost:8080/tests/integration?${param}`);
 
-			await page.waitForSelector('#loaded', {state: 'visible'});
+				await page.waitForSelector('#loaded', {state: 'visible'});
 
-			await page.waitForSelector('#query1', {state: 'hidden'});
-			await page.waitForSelector('#query2', {state: 'hidden'});
-			await page.waitForSelector('#query3', {state: 'hidden'});
+				await page.waitForSelector('#query1', {state: 'hidden'});
+				await page.waitForSelector('#query2', {state: 'hidden'});
+				await page.waitForSelector('#query3', {state: 'hidden'});
 
-			await page.setViewportSize({width: 600, height: 300});
+				await page.setViewportSize({width: 600, height: 300});
 
-			await page.waitForSelector('#query1', {state: 'visible'});
-			await page.waitForSelector('#query2', {state: 'hidden'});
-			await page.waitForSelector('#query3', {state: 'hidden'});
+				await page.waitForSelector('#query1', {state: 'visible'});
+				await page.waitForSelector('#query2', {state: 'hidden'});
+				await page.waitForSelector('#query3', {state: 'hidden'});
 
-			await page.setViewportSize({width: 700, height: 300});
+				await page.setViewportSize({width: 700, height: 300});
 
-			await page.waitForSelector('#query1', {state: 'hidden'});
-			await page.waitForSelector('#query2', {state: 'visible'});
-			await page.waitForSelector('#query3', {state: 'visible'});
+				await page.waitForSelector('#query1', {state: 'hidden'});
+				await page.waitForSelector('#query2', {state: 'visible'});
+				await page.waitForSelector('#query3', {state: 'visible'});
 
-			await page.setViewportSize({width: 750, height: 300});
+				await page.setViewportSize({width: 750, height: 300});
 
-			await page.waitForSelector('#query1', {state: 'hidden'});
-			await page.waitForSelector('#query2', {state: 'visible'});
-			await page.waitForSelector('#query3', {state: 'hidden'});
+				await page.waitForSelector('#query1', {state: 'hidden'});
+				await page.waitForSelector('#query2', {state: 'visible'});
+				await page.waitForSelector('#query3', {state: 'hidden'});
+			});
 		});
 	});
 });

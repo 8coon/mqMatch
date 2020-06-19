@@ -144,4 +144,29 @@ describe('Unit', () => {
 
 		expect(handler.mock.calls).toMatchSnapshot();
 	});
+
+	test('returns correct snapshot', () => {
+		mqMatch = createMediaQueryMatch();
+		expect(mqMatch.getCurrentSnapshot()).toMatchSnapshot();
+
+		mqMatch.register('(min-height: 220)');
+		alter(['(min-height: 220)']);
+		expect(mqMatch.getCurrentSnapshot()).toMatchSnapshot();
+
+		alter([]);
+		expect(mqMatch.getCurrentSnapshot()).toMatchSnapshot();
+	});
+
+	test('hack for weird matchMedia behavior', () => {
+		mqMatch = createMediaQueryMatch({matchMediaStyleHack: true});
+
+		mqMatch.register('(min-height: 220px)');
+		expect(document.querySelector('STYLE').innerHTML).toMatchSnapshot();
+
+		mqMatch.register('(min-height: 440px)');
+		expect(document.querySelector('STYLE').innerHTML).toMatchSnapshot();
+
+		mqMatch.unregister('(min-height: 220px)');
+		expect(document.querySelector('STYLE').innerHTML).toMatchSnapshot();
+	});
 });

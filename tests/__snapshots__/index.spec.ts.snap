@@ -1,14 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Unit hack for weird matchMedia behavior 1`] = `"@media (min-height: 220px) { .__mqMatchClass__ {} }"`;
-
-exports[`Unit hack for weird matchMedia behavior 2`] = `
-"@media (min-height: 440px) { .__mqMatchClass__ {} }
-@media (min-height: 220px) { .__mqMatchClass__ {} }"
-`;
-
-exports[`Unit hack for weird matchMedia behavior 3`] = `"@media (min-height: 440px) { .__mqMatchClass__ {} }"`;
-
 exports[`Unit multiple queries match at once 1`] = `
 Array [
   Array [

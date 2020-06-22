@@ -8,13 +8,6 @@ export interface MQMatchSnapshotRecord {
 	matches: boolean;
 }
 
-export interface MQMatchConfig {
-	/**
-	 * Creates duplicates of all the media queries in order to come around certain browsers' bugs
-	 */
-	matchMediaStyleHack?: boolean;
-}
-
 export interface MQMatch {
 	/**
 	 * Returns the list of current matched queries
@@ -66,9 +59,6 @@ class MQMatchImpl implements MQMatch {
 	private _lastFiredSnapshot: string;
 	private _hackStyleEl: HTMLStyleElement;
 
-	constructor(private _config: MQMatchConfig) {
-	}
-
 	public getCurrentMatches(): string[] {
 		return Object
 			.keys(this._queries)
@@ -112,8 +102,6 @@ class MQMatchImpl implements MQMatch {
 			return;
 		}
 
-		this._updateHackStyle(mediaQuery);
-
 		const query = matchMedia(mediaQuery);
 
 		if (typeof query.addEventListener === 'function') {
@@ -147,8 +135,6 @@ class MQMatchImpl implements MQMatch {
 		if (query.matches) {
 			this._handleMediaQueryChange();
 		}
-
-		this._updateHackStyle();
 	}
 
 	public destroy() {
@@ -173,30 +159,8 @@ class MQMatchImpl implements MQMatch {
 			handler(currentMatches);
 		}
 	}
-
-	private _updateHackStyle(additionalQuery?: string) {
-		if (!this._config.matchMediaStyleHack) {
-			return;
-		}
-
-		this._hackStyleEl?.parentNode?.removeChild(this._hackStyleEl);
-
-		const queries = additionalQuery === undefined
-			? Object.keys(this._queries)
-			: [additionalQuery].concat(Object.keys(this._queries));
-
-		const styleText = queries
-			.map(query => `@media ${query} { .__mqMatchClass__ {} }`)
-			.join('\n');
-
-		this._hackStyleEl = document.createElement('STYLE') as HTMLStyleElement;
-		this._hackStyleEl.innerHTML = styleText;
-
-		/* istanbul ignore next */
-		document?.head.appendChild(this._hackStyleEl);
-	}
 }
 
-export function createMediaQueryMatch(config: MQMatchConfig = {}): MQMatch {
-	return new MQMatchImpl(config);
+export function createMediaQueryMatch(): MQMatch {
+	return new MQMatchImpl();
 }

@@ -156,17 +156,4 @@ describe('Unit', () => {
 		alter([]);
 		expect(mqMatch.getCurrentSnapshot()).toMatchSnapshot();
 	});
-
-	test('hack for weird matchMedia behavior', () => {
-		mqMatch = createMediaQueryMatch({matchMediaStyleHack: true});
-
-		mqMatch.register('(min-height: 220px)');
-		expect(document.querySelector('STYLE').innerHTML).toMatchSnapshot();
-
-		mqMatch.register('(min-height: 440px)');
-		expect(document.querySelector('STYLE').innerHTML).toMatchSnapshot();
-
-		mqMatch.unregister('(min-height: 220px)');
-		expect(document.querySelector('STYLE').innerHTML).toMatchSnapshot();
-	});
 });

@@ -8,6 +8,11 @@ export interface MQMatchSnapshotRecord {
 	matches: boolean;
 }
 
+interface QueryRecord {
+	value: string;
+	query: MediaQueryList;
+}
+
 export interface MQMatch {
 	/**
 	 * Returns the list of current matched queries
@@ -25,13 +30,14 @@ export interface MQMatch {
 	 * @param mediaQuery
 	 */
 	register(mediaQuery: string);
+	register(key: string, mediaQuery: string);
 
 	/**
 	 * Removes given media query from the set
 	 * If the removed query matched, fires <change> event
-	 * @param mediaQuery
+	 * @param key
 	 */
-	unregister(mediaQuery: string);
+	unregister(key: string);
 
 	/**
 	 * Subscribes to an event
@@ -54,7 +60,7 @@ export interface MQMatch {
 }
 
 class MQMatchImpl implements MQMatch {
-	private _queries: Record<string, MediaQueryList> = {};
+	private _queries: Record<string, QueryRecord> = {};
 	private _handlers: MQChangeEventHandler[] = [];
 	private _lastFiredSnapshot: string;
 	private _hackStyleEl: HTMLStyleElement;
@@ -62,16 +68,17 @@ class MQMatchImpl implements MQMatch {
 	public getCurrentMatches(): string[] {
 		return Object
 			.keys(this._queries)
-			.filter(query => this._queries[query].matches);
+			.filter(query => this._queries[query].query.matches);
 	}
 
 	public getCurrentSnapshot(): MQMatchSnapshotRecord[] {
 		return Object
 			.keys(this._queries)
 			.map(query => ({
-				raw: query,
-				parsed: this._queries[query].media,
-				matches: this._queries[query].matches,
+				key: query,
+				raw: this._queries[query].value,
+				parsed: this._queries[query].query.media,
+				matches: this._queries[query].query.matches,
 			}));
 	}
 
@@ -97,8 +104,14 @@ class MQMatchImpl implements MQMatch {
 		}
 	}
 
-	public register(mediaQuery: string) {
-		if (this._queries[mediaQuery]) {
+	public register(mediaQuery: string)
+	public register(key: string, mediaQuery: string)
+	public register(key: string, mediaQuery?: string) {
+		if (mediaQuery === undefined) {
+			mediaQuery = key;
+		}
+
+		if (this._queries[key]) {
 			return;
 		}
 
@@ -110,19 +123,22 @@ class MQMatchImpl implements MQMatch {
 			query.addListener(this._handleMediaQueryChange);
 		}
 
-		this._queries[mediaQuery] = query;
+		this._queries[key] = {
+			value: mediaQuery,
+			query,
+		};
 
 		if (query.matches) {
 			this._handleMediaQueryChange();
 		}
 	}
 
-	public unregister(mediaQuery: string) {
-		if (!this._queries[mediaQuery]) {
+	public unregister(key: string) {
+		if (!this._queries[key]) {
 			return;
 		}
 
-		const query = this._queries[mediaQuery];
+		const query = this._queries[key].query;
 
 		if (typeof query.removeEventListener === 'function') {
 			query.removeEventListener('change', this._handleMediaQueryChange);
@@ -130,7 +146,7 @@ class MQMatchImpl implements MQMatch {
 			query.removeListener(this._handleMediaQueryChange);
 		}
 
-		delete this._queries[mediaQuery];
+		delete this._queries[key];
 
 		if (query.matches) {
 			this._handleMediaQueryChange();
@@ -142,12 +158,15 @@ class MQMatchImpl implements MQMatch {
 
 		Object
 			.keys(this._queries)
-			.forEach(query => this.unregister(query));
+			.forEach(key => this.unregister(key));
 	}
 
 	private _handleMediaQueryChange = () => {
 		const currentMatches = this.getCurrentMatches();
-		const currentMatchesSnapshot = currentMatches.join(',');
+
+		const currentMatchesSnapshot = currentMatches
+			// .sort()
+			.join(',');
 
 		if (this._lastFiredSnapshot !== undefined && this._lastFiredSnapshot === currentMatchesSnapshot) {
 			return;

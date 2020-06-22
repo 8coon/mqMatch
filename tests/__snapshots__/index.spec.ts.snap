@@ -54,6 +54,7 @@ exports[`Unit returns correct snapshot 1`] = `Array []`;
 exports[`Unit returns correct snapshot 2`] = `
 Array [
   Object {
+    "key": "(min-height: 220)",
     "matches": true,
     "parsed": "(min-height: 220)",
     "raw": "(min-height: 220)",
@@ -64,6 +65,7 @@ Array [
 exports[`Unit returns correct snapshot 3`] = `
 Array [
   Object {
+    "key": "(min-height: 220)",
     "matches": false,
     "parsed": "(min-height: 220)",
     "raw": "(min-height: 220)",

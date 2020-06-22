@@ -37,7 +37,7 @@ afterAll(() => {
 			await browser.close();
 		});
 
-		['', 'matchMediaStyleHack'].forEach((param) => {
+		[''].forEach((param) => {
 			test(`Test ${engine.name()}${param ? ` ${param}` : ''}`, async () => {
 				await page.setViewportSize({width: 500, height: 300});
 

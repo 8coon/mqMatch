@@ -157,16 +157,15 @@ describe('Unit', () => {
 		expect(mqMatch.getCurrentSnapshot()).toMatchSnapshot();
 	});
 
-	test('hack for weird matchMedia behavior', () => {
-		mqMatch = createMediaQueryMatch({matchMediaStyleHack: true});
+	test('returns sorted keys', () => {
+		mqMatch = createMediaQueryMatch();
 
-		mqMatch.register('(min-height: 220px)');
-		expect(document.querySelector('STYLE').innerHTML).toMatchSnapshot();
+		mqMatch.register('B', '(min-height: 220)');
+		mqMatch.register('A', '(min-height: 230)');
+		mqMatch.register('C', '(min-height: 240)');
 
-		mqMatch.register('(min-height: 440px)');
-		expect(document.querySelector('STYLE').innerHTML).toMatchSnapshot();
+		alter(['(min-height: 220)', '(min-height: 230)', '(min-height: 240)']);
 
-		mqMatch.unregister('(min-height: 220px)');
-		expect(document.querySelector('STYLE').innerHTML).toMatchSnapshot();
+		expect(mqMatch.getCurrentMatches()).toEqual(['A', 'B', 'C']);
 	});
 });

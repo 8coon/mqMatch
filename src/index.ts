@@ -68,7 +68,8 @@ class MQMatchImpl implements MQMatch {
 	public getCurrentMatches(): string[] {
 		return Object
 			.keys(this._queries)
-			.filter(query => this._queries[query].query.matches);
+			.filter(query => this._queries[query].query.matches)
+			.sort();
 	}
 
 	public getCurrentSnapshot(): MQMatchSnapshotRecord[] {
@@ -164,9 +165,7 @@ class MQMatchImpl implements MQMatch {
 	private _handleMediaQueryChange = () => {
 		const currentMatches = this.getCurrentMatches();
 
-		const currentMatchesSnapshot = currentMatches
-			.sort()
-			.join(',');
+		const currentMatchesSnapshot = currentMatches.join(',');
 
 		if (this._lastFiredSnapshot !== undefined && this._lastFiredSnapshot === currentMatchesSnapshot) {
 			return;

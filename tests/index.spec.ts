@@ -156,4 +156,16 @@ describe('Unit', () => {
 		alter([]);
 		expect(mqMatch.getCurrentSnapshot()).toMatchSnapshot();
 	});
+
+	test('returns sorted keys', () => {
+		mqMatch = createMediaQueryMatch();
+
+		mqMatch.register('B', '(min-height: 220)');
+		mqMatch.register('A', '(min-height: 230)');
+		mqMatch.register('C', '(min-height: 240)');
+
+		alter(['(min-height: 220)', '(min-height: 230)', '(min-height: 240)']);
+
+		expect(mqMatch.getCurrentMatches()).toEqual(['A', 'B', 'C']);
+	});
 });

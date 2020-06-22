@@ -165,7 +165,7 @@ class MQMatchImpl implements MQMatch {
 		const currentMatches = this.getCurrentMatches();
 
 		const currentMatchesSnapshot = currentMatches
-			// .sort()
+			.sort()
 			.join(',');
 
 		if (this._lastFiredSnapshot !== undefined && this._lastFiredSnapshot === currentMatchesSnapshot) {
